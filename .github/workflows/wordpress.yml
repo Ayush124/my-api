@@ -1,0 +1,35 @@
+name: WordPress Build
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14.x'
+      - name: Install dependencies
+        run: npm install
+      - name: Build assets
+        run: npm run build
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.4'
+      - name: Install WordPress
+        run: |
+          curl -O https://wordpress.org/latest.tar.gz
+          tar xzf latest.tar.gz
+          mv wordpress/* .
+          rm -rf wordpress latest.tar.gz
+   
+      - name: Build project
+        run: |
+          wp core update
+          wp plugin update --all
+          wp theme update --all
