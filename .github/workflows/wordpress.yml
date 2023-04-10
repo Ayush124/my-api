@@ -27,8 +27,4 @@ jobs:
           mv wordpress/* .
           rm -rf wordpress latest.tar.gz
    
-      - name: Build project
-        run: |
-          wp core update
-          wp plugin update --all
-          wp theme update --all
+    
